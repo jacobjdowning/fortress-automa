@@ -3,6 +3,8 @@ local tile_map, rotation_map = unpack(require "map")
 local utils = require("utils")
 local map_batch, tile_quads, tile_size
 local camera = love.math.newTransform()
+local UI = require("ui")
+local UI_Renderer, Widget = UI.UI_Renderer, UI.Widget
 
 local function load_tiles()
 	map_batch, tile_quads, tile_size, _ = loadTileset("asset/tileset.tsx")
@@ -32,12 +34,21 @@ function love.load()
 	update_map_batch()
 	camera:translate(70,0)
 	camera:scale(2)
+
+	local test = Widget:new()
+	UI_Renderer:pushWidget(test)
+	UI_Renderer:update()
 end
 
 ---@override
 function love.draw()
 	love.graphics.applyTransform(camera)
+	-- draw world
 	love.graphics.draw(map_batch)
+
+	love.graphics.applyTransform(camera:inverse())
+	-- draw UI
+	UI_Renderer:render()
 end
 
 ---@override

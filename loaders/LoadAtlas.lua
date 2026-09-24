@@ -2,12 +2,12 @@ local xml2lua = require "libs.xml2lua"
 local handler = require "libs.xmltree"
 
 return function(atlasPath)
-	atlasFile = io.open(atlasPath, "r")
-	atlasString = atlasFile:read("*all")
+	local atlasFile = io.open(atlasPath, "r")
+	local atlasString = atlasFile:read("*all")
 	local parser = xml2lua.parser(handler)
 	parser:parse(atlasString)
-	local xoffset = 10 
-	local yoffset = 10 
+	local xoffset = 10
+	local yoffset = 10
 
 	-- Create Spritebatch
 	local imageInfo = handler.root.TextureAtlas._attr
@@ -18,11 +18,11 @@ return function(atlasPath)
 	-- Create Quads
 	local quads = {}
 	local sprite
-	-- This usually is done in the parser but I removed it because it was removing my names from the xml attributes
-	handler.root.TextureAtlas.sprite.n = nil 
 	for k,v in pairs(handler.root.TextureAtlas.SubTexture) do
-		sprite = v._attr
-		quads[sprite.name] = love.graphics.newQuad(sprite.x, sprite.y, sprite.width, sprite.height, imageInfo.width, imageInfo.height)
+		if type(v) == "table" then
+			sprite = v._attr
+			quads[sprite.name] = love.graphics.newQuad(sprite.x, sprite.y, sprite.width, sprite.height, imageInfo.width, imageInfo.height)
+		end
 	end
 
 	return spriteBatch, quads
