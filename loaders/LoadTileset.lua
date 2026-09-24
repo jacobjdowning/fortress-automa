@@ -13,19 +13,22 @@ return function(tilesetPath)
 	local imageInfo = handler.root.tileset.image._attr
 	local texturePath = tilesetPath:sub(0, tilesetPath:match'^.*()/') .. imageInfo.source
 	local texture = love.graphics.newImage(texturePath)
+	texture:setFilter("nearest", "nearest")
 	local spriteBatch = love.graphics.newSpriteBatch(texture, 100, "dynamic")
 
 	-- Creat Quads
 	local quads = {}
+	local width = 0
+	local height = 0
 	for x=0, tilesetInfo.tilecount do
 		local column = math.fmod(x, tilesetInfo.columns) 	
 		local row = math.floor(x/tilesetInfo.columns)
 		width = tilesetInfo.tilewidth
 		height = tilesetInfo.tileheight
-		local x = column * (width + tilesetInfo.spacing)
-		local y = row * (height + tilesetInfo.spacing)
-		table.insert(quads, love.graphics.newQuad(x, y, width, height, imageInfo.width, imageInfo.height))
-	end	
+		local xq = column * (width + tilesetInfo.spacing)
+		local yq = row * (height + tilesetInfo.spacing)
+		table.insert(quads, love.graphics.newQuad(xq, yq, width, height, imageInfo.width, imageInfo.height))
+	end
 
 	return spriteBatch, quads, width, height
 end

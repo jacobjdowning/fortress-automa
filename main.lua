@@ -8,9 +8,17 @@ end
 
 local function update_map_batch()
 	map_batch:clear()
+	local half_size = tile_size / 2
 	for row=1,  #tile_map do
 		for col=1,  #tile_map[row] do
-			map_batch:add(tile_quads[tile_map[row][col]], row*tile_size, col*tile_size, rotation_map[row][col])
+			map_batch:add(
+				tile_quads[tile_map[row][col]],
+				(col-1)*tile_size + half_size,
+				(row-1)*tile_size + half_size,
+				rotation_map[row][col],
+				1,1,
+				half_size, half_size
+			)
 		end
 	end
 	map_batch:flush()
@@ -20,8 +28,8 @@ end
 function love.load()
 	load_tiles()
 	update_map_batch()
-	camera:translate(0,0)
-	camera:scale(1)
+	camera:translate(70,0)
+	camera:scale(2)
 end
 
 ---@override
