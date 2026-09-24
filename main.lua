@@ -1,4 +1,6 @@
-local loadTileset = require "loaders.LoadTileset" local tile_map, rotation_map = unpack(require "map")
+local loadTileset = require "loaders.LoadTileset"
+local tile_map, rotation_map = unpack(require "map")
+local utils = require("utils")
 local map_batch, tile_quads, tile_size
 local camera = love.math.newTransform()
 
@@ -41,4 +43,12 @@ end
 ---@override
 function love.keypressed(key, unicode)
 	love.event.quit()
+end
+
+---@override
+function love.mousepressed(x, y, button)
+	local worldx, worldy = camera:inverse():transformPoint(x, y)
+	local col, row= utils.coords_to_tile(worldx,worldy)
+	tile_map[row][col]=43
+	update_map_batch()
 end
