@@ -4,7 +4,7 @@ local utils = require("utils")
 local map_batch, tile_quads, tile_size
 local camera = love.math.newTransform()
 local UI = require("ui")
-local UI_Renderer, Widget = UI.UI_Renderer, UI.Widget
+local UI_Renderer, Widget, Panel = UI.UI_Renderer, UI.Widget, UI.Panel
 
 local function load_tiles()
 	map_batch, tile_quads, tile_size, _ = loadTileset("asset/tileset.tsx")
@@ -35,7 +35,7 @@ function love.load()
 	camera:translate(70,0)
 	camera:scale(2)
 
-	local test = Widget:new()
+	local test = Panel:new()
 	UI_Renderer:pushWidget(test)
 	UI_Renderer:update()
 end
